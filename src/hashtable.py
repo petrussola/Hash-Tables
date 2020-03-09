@@ -74,7 +74,26 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        if not self.storage[index]:
+            print("No data to be deleted")
+        else:
+            # if the node at index is the last one, set the index to None value
+            node = self.storage[index]
+            if not node.next:
+                self.storage[index] = None
+
+            # if it is not the last one, loop over the LL to find the node with the key we are looking for
+            else:
+                while node.key != key:
+                    prev_node = node
+                    node = node.next
+            # when we find it
+            # if it is the last one, set the previous node next to none
+            # if it isn't, link previous node next to the next node after the one with the key we are looking for
+                prev_node.next = node.next
+
+
 
     def retrieve(self, key):
         '''
