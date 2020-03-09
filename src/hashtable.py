@@ -52,17 +52,18 @@ class HashTable:
         Fill this in.
         '''
         index = self._hash_mod(key)
-        # print(index)
         if not self.storage[index]:
-            # print(index, "<<< was empty")    
             self.storage[index] = LinkedPair(key, value)
-            # print(index, "<<index", self.storage[index].value)
         else:
-            # print(self.storage[index].value, "<<< value |", self.storage[index].key, "<< key")
             node = self.storage[index]
-            while node.next:
-                node = node.next
-            node.next = LinkedPair(key, value)
+            while node:
+                if node.key == key:
+                    node.value = value
+                    return value
+                else:
+                    prev_node = node
+                    node = node.next
+            prev_node.next = LinkedPair(key, value)
             
 
     def remove(self, key):
