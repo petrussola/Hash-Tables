@@ -64,7 +64,6 @@ class HashTable:
                     prev_node = node
                     node = node.next
             prev_node.next = LinkedPair(key, value)
-            
 
     def remove(self, key):
         '''
@@ -92,8 +91,6 @@ class HashTable:
             # if it is the last one, set the previous node next to none
             # if it isn't, link previous node next to the next node after the one with the key we are looking for
                 prev_node.next = node.next
-
-
 
     def retrieve(self, key):
         '''
@@ -125,7 +122,10 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        new_storage = [None] * (self.capacity * 2)
+        for i in range(len(self.storage)):
+            new_storage[i] = self.storage[i]
+        self.storage = new_storage
 
 
 if __name__ == "__main__":
