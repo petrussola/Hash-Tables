@@ -1,21 +1,24 @@
 # '''
 # Linked List hash table key/value pair
 # '''
+
+
 class LinkedPair:
     def __init__(self, key, value):
         self.key = key
         self.value = value
         self.next = None
 
+
 class HashTable:
     '''
     A hash table that with `capacity` buckets
     that accepts string keys
     '''
+
     def __init__(self, capacity):
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
-
 
     def _hash(self, key):
         '''
@@ -25,7 +28,6 @@ class HashTable:
         '''
         return hash(key)
 
-
     def _hash_djb2(self, key):
         '''
         Hash an arbitrary key using DJB2 hash
@@ -34,14 +36,12 @@ class HashTable:
         '''
         pass
 
-
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
         '''
         return self._hash(key) % self.capacity
-
 
     def insert(self, key, value):
         '''
@@ -51,9 +51,19 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
-
+        index = self._hash_mod(key)
+        # print(index)
+        if not self.storage[index]:
+            # print(index, "<<< was empty")    
+            self.storage[index] = LinkedPair(key, value)
+            # print(index, "<<index", self.storage[index].value)
+        else:
+            # print(self.storage[index].value, "<<< value |", self.storage[index].key, "<< key")
+            node = self.storage[index]
+            while node.next:
+                node = node.next
+            node.next = LinkedPair(key, value)
+            
 
     def remove(self, key):
         '''
@@ -65,7 +75,6 @@ class HashTable:
         '''
         pass
 
-
     def retrieve(self, key):
         '''
         Retrieve the value stored with the given key.
@@ -74,8 +83,20 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
+        # print(f"We want to retrieve key {key}")
+        index = self._hash_mod(key)
+        # print(f"This is the index: {index} <<<<")
+        node = self.storage[index]
+        # print(node.key, "<<< key in the node")
+        # print(key, "<<< key we are searching for")
+        while node:
+            if node.key == key:
+                # print(f"found the key {node.key}!")
+                return node.value
+            else:
+                # print("nope, next node please")
+                node = node.next
+                # print(node.next, "this is the next node")
 
     def resize(self):
         '''
@@ -85,7 +106,6 @@ class HashTable:
         Fill this in.
         '''
         pass
-
 
 
 if __name__ == "__main__":
