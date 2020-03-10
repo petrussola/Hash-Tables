@@ -18,6 +18,7 @@ class HashTable:
 
     def __init__(self, capacity):
         self.capacity = capacity  # Number of buckets in the hash table
+        self.usage = 0
         self.storage = [None] * capacity
 
     def _hash(self, key):
@@ -39,7 +40,7 @@ class HashTable:
         hash = 5381
         # iterate over each char in the key
         for el in key:
-            # set the hash value to the bit shift left by 5 of the hash value and sum of the hash value  then add the value for the char 
+            # set the hash value to the bit shift left by 5 of the hash value and sum of the hash value  then add the value for the char
             hash = ((hash << 5) + hash) + ord(el)
         # return the hash value
         return hash
@@ -62,6 +63,7 @@ class HashTable:
         index = self._hash_mod(key)
         if not self.storage[index]:
             self.storage[index] = LinkedPair(key, value)
+            self.usage += 1
         else:
             node = self.storage[index]
             while node:
@@ -72,6 +74,15 @@ class HashTable:
                     prev_node = node
                     node = node.next
             prev_node.next = LinkedPair(key, value)
+        # load factor
+        load_factor = self.usage / len(self.storage)
+        # print(load_factor, "<<< load factor")
+        # print(len(self.storage), "<<< storage length")
+        if load_factor > 0.7:
+            self.resize(2)
+        # elif load_factor < 0.2:
+        # #     self.resize(0.5)
+        # print(load_factor, self.capacity, "<<<< load factor")
 
     def remove(self, key):
         '''
@@ -89,6 +100,7 @@ class HashTable:
             node = self.storage[index]
             if not node.next:
                 self.storage[index] = None
+                self.usage -= 1
 
             # if it is not the last one, loop over the LL to find the node with the key we are looking for
             else:
@@ -116,14 +128,14 @@ class HashTable:
             else:
                 node = node.next
 
-    def resize(self):
+    def resize(self, factor):
         '''
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
 
         Fill this in.
         '''
-        new_storage = [None] * (self.capacity * 2)
+        new_storage = [None] * (len(self.storage) * factor)
         for i in range(len(self.storage)):
             new_storage[i] = self.storage[i]
         self.storage = new_storage
