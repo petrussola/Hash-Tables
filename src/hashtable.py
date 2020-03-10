@@ -108,20 +108,13 @@ class HashTable:
 
         Fill this in.
         '''
-        # print(f"We want to retrieve key {key}")
         index = self._hash_mod(key)
-        # print(f"This is the index: {index} <<<<")
         node = self.storage[index]
-        # print(node.key, "<<< key in the node")
-        # print(key, "<<< key we are searching for")
         while node:
             if node.key == key:
-                # print(f"found the key {node.key}!")
                 return node.value
             else:
-                # print("nope, next node please")
                 node = node.next
-                # print(node.next, "this is the next node")
 
     def resize(self):
         '''
