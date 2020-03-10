@@ -76,13 +76,11 @@ class HashTable:
             prev_node.next = LinkedPair(key, value)
         # load factor
         load_factor = self.usage / len(self.storage)
-        # print(load_factor, "<<< load factor")
-        # print(len(self.storage), "<<< storage length")
+
         if load_factor > 0.7:
-            self.resize(2)
-        # elif load_factor < 0.2:
-        # #     self.resize(0.5)
-        # print(load_factor, self.capacity, "<<<< load factor")
+            self.resize(16)
+        elif load_factor < 0.2:
+            self.resize(4)
 
     def remove(self, key):
         '''
@@ -135,8 +133,9 @@ class HashTable:
 
         Fill this in.
         '''
-        new_storage = [None] * (len(self.storage) * factor)
-        for i in range(len(self.storage)):
+        self.capacity = factor
+        new_storage = [None] * factor
+        for i in range(self.usage):
             new_storage[i] = self.storage[i]
         self.storage = new_storage
 
